@@ -15,6 +15,7 @@ Modal.setAppElement('#root');
 
 const ImageModal = ({ url, alt, modalIsOpen, closeModal }) => {
     return  (
+      <div>
        <Modal
           isOpen={modalIsOpen}
           onRequestClose={closeModal}
@@ -22,7 +23,9 @@ const ImageModal = ({ url, alt, modalIsOpen, closeModal }) => {
           contentLabel="Example Modal"
        >
           <img src={url} alt={alt} />
-       </Modal>)
+       </Modal>
+      </div>
+    );
 }
 
 export default ImageModal;

@@ -17,13 +17,13 @@ const SearchBar = ({ onSubmit }) => {
         onSubmit(query);
         setQuery("");
     };
+
     return (
         <form onSubmit={handleSubmit}>
             <button type="submit"><IoSearch /></button>
             <input type="text"
-            name="search"
+            name="query"
             value={query}
-            autoComplete="off"
             autoFocus  
             placeholder="Search images and photos"
             onChange={handleChange} />

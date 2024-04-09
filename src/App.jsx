@@ -14,24 +14,20 @@ function App() {
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [isEmpty, setIsEmpty] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [url, setUrl] = useState("");
+  const [urls, setUrls] = useState("");
   const [alt, setAlt] = useState("");
 
   useEffect(() => {
     if (!query) return;
     const fetchData = async () => {
-      setIsLoading(true);
       try {
-        const { photos, per_page, total_results } = await getImages(query, page);
-        if (!photos.length) {
-          setIsEmpty(true);
-          return;
-        }
-        setImages(prevImages => ([...prevImages, ...photos]));
-        setIsVisible(page < Math.ceil(total_results / per_page));
+        setIsLoading(true);
+        const data = await getImages(page, query);
+        setImages((prevImages) => [...prevImages, ...data.results]);
+        setIsVisible(page < data.total_pages);
       } catch (error) {
         setError(error); 
       } finally {
@@ -54,29 +50,29 @@ function App() {
     setPage(prevPage => prevPage + 1)
 }
 
-  const openModal = (url, alt) => {
+  const openModal = (urls, alt) => {
     setShowModal(true);
-    setUrl(url);
-    setAlt(alt);
+    setUrls(urls.regular);
+    setAlt(alt.description);
   }
   
   const closeModal = () => {
     setShowModal(false);
-    setUrl("");
+    setUrls("");
     setAlt("");
   }
 
   return (
     <>
     <SearchBar onSubmit={onHandleSubmit}/>
-    {images.length > 0 && <ImageGallery images={images} openModal={openModal}/>}
-    {isVisible && <LoadMoreBtn onClick={onLoadMore} disabled={isLoading}>{isLoading ? "Loading" : "Load more"}</LoadMoreBtn>}
+    {images.length > 0 && (<ImageGallery images={images} openModal={openModal} />)}
+    {isVisible && !isLoading && (<LoadMoreBtn onClick={onLoadMore} disabled={isLoading} />)}
     {isLoading && <Loader />}
     {error && <ErrorMessage />}
-    {isEmpty && (<p>Sorry, there is no images...</p>)}
-    <ImageModal url={url} alt={alt} modalIsOpen={showModal} closeModal={closeModal} />
+    {!images.length && !isEmpty && (<p>Sorry, there is no images...</p>)}
+    <ImageModal url={urls} alt={alt} modalIsOpen={showModal} closeModal={closeModal} />
     </>
-  )
+  );
 }
 
 export default App

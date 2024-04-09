@@ -1,6 +1,6 @@
-const LoadMoreBtn = ({ children, onClick, disabled}) => {
+const LoadMoreBtn = ({ onClick, disabled}) => {
     return (
-        <button onClick={onClick} disabled={disabled}>{children}</button>
+        <button onClick={onClick} disabled={disabled}>Load more</button>
     );
 }
 
