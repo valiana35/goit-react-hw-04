@@ -1,0 +1,31 @@
+.container {
+    max-width: 1280px;
+}
+
+.form {
+    justify-content: center;
+    align-items: center; 
+    border: 2px solid gray;
+    border-radius: 4px;
+}
+
+.btnForm {
+    border: none;
+    height: 42px;
+    border-radius: 0%;
+}
+
+.inputForm {
+    border: none;
+    height: 42px;
+}
+
+.btnForm:focus {
+    outline: transparent;
+    background-color: white;
+}
+
+.inputForm:focus {
+    outline: transparent;
+    background-color: white;
+}

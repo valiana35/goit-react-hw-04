@@ -1,5 +1,9 @@
 .card {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.cardItem {
+    width: calc((100% - 20px * 3) / 4);
 }

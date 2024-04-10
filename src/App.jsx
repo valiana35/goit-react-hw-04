@@ -14,20 +14,24 @@ function App() {
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [isEmpty, setIsEmpty] = useState(true);
+  const [isEmpty, setIsEmpty] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [urls, setUrls] = useState("");
+  const [url, setUrl] = useState("");
   const [alt, setAlt] = useState("");
 
   useEffect(() => {
     if (!query) return;
     const fetchData = async () => {
+      setIsLoading(true);
       try {
-        setIsLoading(true);
-        const data = await getImages(page, query);
-        setImages((prevImages) => [...prevImages, ...data.results]);
-        setIsVisible(page < data.total_pages);
+        const { results, per_page, total_pages } = await getImages(query, page);
+        if (!results.length) {
+          setIsEmpty(true);
+          return;
+        }
+        setImages((prevImages) => [...prevImages, ...results]);
+        setIsVisible(page < Math.ceil(total_pages / per_page));
       } catch (error) {
         setError(error); 
       } finally {
@@ -35,7 +39,7 @@ function App() {
       }
     };
     fetchData()
-  }, [page, query]);
+  }, [query, page]);
 
   const onHandleSubmit = (value) => {
     setQuery(value);
@@ -47,30 +51,34 @@ function App() {
   }
 
   const onLoadMore = () => {
-    setPage(prevPage => prevPage + 1)
-}
+    setPage((prevPage) => prevPage + 1)
+  }
 
-  const openModal = (urls, alt) => {
+  const openModal = (url, alt) => {
     setShowModal(true);
-    setUrls(urls.regular);
-    setAlt(alt.description);
+    setUrl(url.urls.regular);
+    setAlt(alt.alt_description);
   }
   
   const closeModal = () => {
     setShowModal(false);
-    setUrls("");
+    setUrl("");
     setAlt("");
   }
 
   return (
     <>
-    <SearchBar onSubmit={onHandleSubmit}/>
+    <SearchBar onSubmit={onHandleSubmit} />
     {images.length > 0 && (<ImageGallery images={images} openModal={openModal} />)}
-    {isVisible && !isLoading && (<LoadMoreBtn onClick={onLoadMore} disabled={isLoading} />)}
+    {isVisible && !isLoading && (
+      <LoadMoreBtn onClick={onLoadMore} disabled={isLoading}>
+      {isLoading ? "Loading" : "Load more"}
+      </LoadMoreBtn>
+    )}
     {isLoading && <Loader />}
+    {!images.length && isEmpty && (<p>Sorry, there is no images...</p>)}
     {error && <ErrorMessage />}
-    {!images.length && !isEmpty && (<p>Sorry, there is no images...</p>)}
-    <ImageModal url={urls} alt={alt} modalIsOpen={showModal} closeModal={closeModal} />
+    <ImageModal url={url} alt={alt} modalIsOpen={showModal} closeModal={closeModal} />
     </>
   );
 }
