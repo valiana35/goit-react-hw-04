@@ -25,13 +25,13 @@ function App() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const { results, per_page, total_pages } = await getImages(query, page);
+        const { results, total_pages } = await getImages(query, page);
         if (!results.length) {
           setIsEmpty(true);
           return;
         }
         setImages((prevImages) => [...prevImages, ...results]);
-        setIsVisible(page < Math.ceil(total_pages / per_page));
+        setIsVisible(page < total_pages);
       } catch (error) {
         setError(error); 
       } finally {
@@ -70,10 +70,8 @@ function App() {
     <>
     <SearchBar onSubmit={onHandleSubmit} />
     {images.length > 0 && (<ImageGallery images={images} openModal={openModal} />)}
-    {isVisible && !isLoading && (
-      <LoadMoreBtn onClick={onLoadMore} disabled={isLoading}>
-      {isLoading ? "Loading" : "Load more"}
-      </LoadMoreBtn>
+    {isVisible && (
+      <LoadMoreBtn onClick={onLoadMore} disabled={isLoading}>{isLoading ? "Loading" : "Load more"}</LoadMoreBtn>
     )}
     {isLoading && <Loader />}
     {!images.length && isEmpty && (<p>Sorry, there is no images...</p>)}

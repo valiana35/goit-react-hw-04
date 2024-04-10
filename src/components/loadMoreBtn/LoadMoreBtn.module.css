@@ -1,0 +1,11 @@
+.loadMore {
+    display: flex;
+    justify-content: center;
+}
+
+.loadMoreBtn {
+    background-color: rgb(29, 29, 123);
+    color: aliceblue;
+    border-radius: 2px;
+    margin-top: 20px;
+}
