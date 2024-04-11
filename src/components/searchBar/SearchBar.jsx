@@ -20,7 +20,6 @@ const SearchBar = ({ onSubmit }) => {
     };
 
     return (
-        <div className={css.container}>
         <form className={css.form} onSubmit={handleSubmit}>
             <button className={css.btnForm} type="submit"><IoSearch /></button>
             <input className={css.inputForm} type="text"
@@ -31,7 +30,6 @@ const SearchBar = ({ onSubmit }) => {
             onChange={handleChange} />
             <Toaster/>
         </form>
-        </div>
     );
 }
 

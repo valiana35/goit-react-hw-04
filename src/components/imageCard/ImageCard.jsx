@@ -1,4 +1,4 @@
-import css from './ImageCard.module.css'
+import css from './ImageCard.module.css';
 
 const ImageCard = ({ image, openModal }) => {
     return (
