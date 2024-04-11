@@ -19,6 +19,8 @@ function App() {
   const [showModal, setShowModal] = useState(false);
   const [url, setUrl] = useState("");
   const [alt, setAlt] = useState("");
+  const [description, setDescription] = useState("");
+  const [likes, setLikes] = useState(0);
 
   useEffect(() => {
     if (!query) return;
@@ -54,16 +56,20 @@ function App() {
     setPage((prevPage) => prevPage + 1)
   }
 
-  const openModal = (url, alt) => {
+  const openModal = (obj) => {
     setShowModal(true);
-    setUrl(url.urls.regular);
-    setAlt(alt.alt_description);
+    setUrl(obj.urls.regular);
+    setAlt(obj.alt_description);
+    setDescription(obj.description);
+    setLikes(obj.likes);
   }
   
   const closeModal = () => {
     setShowModal(false);
     setUrl("");
     setAlt("");
+    setDescription("");
+    setLikes(0);
   }
 
   return (
@@ -76,7 +82,7 @@ function App() {
     {isLoading && <Loader />}
     {!images.length && isEmpty && (<p>Sorry, there is no images...</p>)}
     {error && <ErrorMessage />}
-    <ImageModal url={url} alt={alt} modalIsOpen={showModal} closeModal={closeModal} />
+    <ImageModal url={url} alt={alt} modalIsOpen={showModal} closeModal={closeModal} description={description} likes={likes} />
     </>
   );
 }

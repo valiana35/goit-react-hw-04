@@ -13,7 +13,7 @@ const customStyles = {
 
 Modal.setAppElement('#root');
 
-const ImageModal = ({ url, alt, modalIsOpen, closeModal }) => {
+const ImageModal = ({ url, alt, modalIsOpen, closeModal, description, likes }) => {
     return  (
       <div>
        <Modal
@@ -23,6 +23,8 @@ const ImageModal = ({ url, alt, modalIsOpen, closeModal }) => {
           contentLabel="Example Modal"
        >
           <img src={url} alt={alt} />
+          <p>{description}</p>
+          <p>Likes: {likes}</p>
        </Modal>
       </div>
     );
